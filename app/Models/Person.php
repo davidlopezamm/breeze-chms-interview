@@ -10,6 +10,7 @@ class Person extends Model
         'first_name',
         'last_name',
         'email_address',
+        'group_id',
         'status'
     ];
 }

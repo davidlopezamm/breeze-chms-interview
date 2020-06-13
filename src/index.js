@@ -1,25 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Container, Header } from "semantic-ui-react";
-
-import ResultsList from "./ResultsList";
+import Pages from "./App";
+import { Link } from 'react-router';
 
 const App = ({ children }) => (
-  <Container style={{ margin: 20 }}>
-    <Header as="h3"><span role="img" aria-label="logo">⛵️</span> Breeze Church Management </Header>
+    <Container style={{ margin: 20 }}>
 
-    {children}
-  </Container>
+<Header as="h3"> <span role="img" aria-label="logo">⛵️</span> Breeze Church Management </Header>
+<Link className="btn btn-default btn-lg" href={'/people'} >People</Link> <Link className="btn btn-default btn-lg" href={'/groups'} >Groups</Link>
+
+{children}
+</Container>
 );
 
-const styleLink = document.createElement("link");
-styleLink.rel = "stylesheet";
-styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
-document.head.appendChild(styleLink);
-
-ReactDOM.render(
-  <App>
-    <ResultsList />
-  </App>,
-  document.getElementById("root")
-);
+ReactDOM.render( <App> <Pages/> </App>, document.getElementById("root"));

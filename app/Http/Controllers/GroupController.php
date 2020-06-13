@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 
-use App\Http\Resources\PeopleCollection;
-use App\Http\Resources\PersonResource;
-use App\Models\Person;
+use App\Http\Resources\GroupCollection;
+use App\Http\Resources\GroupResource;
+use App\Models\Group;
 
-class PeopleController extends Controller
+
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +19,7 @@ class PeopleController extends Controller
      */
     public function index()
     {
-        return new PeopleCollection( $person = DB::table('groups')
-            ->rightJoin('people', 'groups.id', '=', 'people.group_id')
-            ->select('people.*','groups.group_name')
-            ->get());
+        return new GroupCollection(Group::all());
     }
 
     /**
@@ -43,18 +40,13 @@ class PeopleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'first_name'    => 'required|max:255',
-            'last_name'     => 'required|max:255',
-            'email_address' => 'required|email',
-            'group_id' => 'required|max:20',
+         $request->validate([
+            'group_name'    => 'required|max:255'
+             ]);
 
-            'status'        => Rule::in(['active', 'archived'])
-        ]);
+        $group = Group::create($request->all());
 
-        $person = Person::create($request->all());
-
-        return (new PersonResource($person))
+        return (new GroupResource($group))
             ->response()
             ->setStatusCode(201);
     }
@@ -67,16 +59,7 @@ class PeopleController extends Controller
      */
     public function show($id)
     {
-
-        $person = DB::table('groups')
-            ->leftJoin('people', 'groups.id', '=', 'people.group_id')
-            ->select('people.*','groups.group_name')
-            ->where('people.id', '=', $id)
-            ->get();
-
-            return ($person);
-           // return new PersonResource(Person::findOrFail($id));
-      
+        return new GroupResource(Group::findOrFail($id));
     }
 
     /**
@@ -99,8 +82,8 @@ class PeopleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $person = Person::findOrFail($id);
-        $person->update($request->all());
+        $group = Group::findOrFail($id);
+        $group->update($request->all());
 
         return response()->json(null, 204);
     }
@@ -113,20 +96,9 @@ class PeopleController extends Controller
      */
     public function destroy($id)
     {
-        $person = Person::findOrFail($id);
-        $person->delete();
+         $group = Group::findOrFail($id);
+         $group->delete();
 
         return response()->json(null, 204);
     }
-
-     public function get_people_group($id_group) {
-
-      $person = DB::table('people')
-            ->select('people.*')
-            ->where('people.group_id', '=', $id_group)
-            ->where('people.status', '=', 'active' )
-            ->get();
-
-            return new PeopleCollection($person);
-}
 }

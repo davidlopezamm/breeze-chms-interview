@@ -11,17 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-a.btn-edit {
-    background: #4183c4;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 4px;
-}
-
-a.btn-edit:hover {
-    background: ##1e70bf;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 4px;
-}

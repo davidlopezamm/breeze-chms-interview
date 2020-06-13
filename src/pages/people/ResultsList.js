@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
-import { Router } from 'react-router-dom';
 
-import history from './services/history'
-import Routes from './routes';
 
 class ResultsList extends Component {
     constructor(props) {
@@ -20,10 +17,7 @@ class ResultsList extends Component {
     render() {
         var data = this.state.data || [];
 
-        return<Router history={history}>
-            <Routes />
-            </ Router>
-        (
+        return        (
 
             <Table celled padded>
               <Table.Header>

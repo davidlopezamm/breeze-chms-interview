@@ -13,4 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('peoplegroup/{id}', 'PeopleController@get_people_group');
+
 Route::resource('people', 'PeopleController');
+Route::resource('group', 'GroupController');
+

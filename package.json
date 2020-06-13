@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.19.2",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "history": "^4.10.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router": "^3.0.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.0.1",
     "react-test-renderer": "^16.8.6",
-    "semantic-ui-react": "^0.87.3"
+    "semantic-ui-react": "^0.87.3",
+    "webpack": "4.29.6",
+    "webpack-dev-server": "3.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
