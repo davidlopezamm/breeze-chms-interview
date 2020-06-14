@@ -18,12 +18,16 @@ class edit extends Component {
 
     componentDidMount() {
         let jsondata
-        const { id } = this.props.match.params
-         fetch(`${this.state.url}people/${id}`)
-             .then(response => response.json())
-            .then((responseJson) =>
-                this.setState({ data: responseJson[0] })
-         );
+        const {id} = this.props.match.params
+
+        if( `${id}` !== "create")
+        {
+            fetch(`${this.state.url}people/${id}`)
+                .then(response => response.json())
+                .then((responseJson) =>
+                    this.setState({data: responseJson[0]})
+                );
+        }
 
         fetch(`${this.state.url}group`)
             .then(response => response.json())
@@ -51,6 +55,24 @@ class edit extends Component {
         // form validation
 
             // send form data to app
+        if(`${id}`=='create'){
+            axios.post(`${this.state.url}people`, {
+                first_name: this.state.data.first_name,
+                last_name: this.state.data.last_name,
+                email_address: this.state.data.email_address,
+                group_id: this.state.data.group_id,
+                status: this.state.data.status
+            }).then((response)=>
+                {
+                    this.props.history.push('/people')
+                    alert('Success, changes have been saved!');
+                }
+            )
+                .catch(e => {
+                    console.log(e.message);
+                });
+
+        }else{
            axios.put(`${this.state.url}people/${id}`, {
                     first_name: this.state.data.first_name,
                     last_name: this.state.data.last_name,
@@ -59,15 +81,16 @@ class edit extends Component {
                     status: this.state.data.status
                 }).then((response)=>
                {
-                   this.props.history.goBack()
+                   this.props.history.push('/people')
                    alert('Success, changes have been saved!');
                }
            )
                 .catch(e => {
                     console.log(e.message);
                 });
-
+        }
     };
+
 
 
 
@@ -79,7 +102,7 @@ class edit extends Component {
         return(
 
             <div>
-            <h1>Edit User</h1>
+            <h1>User</h1>
         <div className="col-lg-8">
             <form onSubmit={this.onFormSubmit}>
             <div>

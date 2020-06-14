@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from "axios"
+import axios from 'axios'
 import { withRouter } from 'react-router';
 import { Table } from 'semantic-ui-react'
 
@@ -18,10 +18,15 @@ class editGroup extends Component {
 
     componentDidMount() {
         const { id } = this.props.match.params
-        fetch(`${this.state.url}group/${id}`)
-            .then(response => response.json())
-            .then(data => this.setState({ hits: data.data }));
 
+        if( `${id}` !== "create")
+        {
+            fetch(`${this.state.url}group/${id}`)
+                .then(response => response.json())
+                .then((responseJson) =>
+                    this.setState({data: responseJson[0]})
+                );
+        }
 
 
     }
@@ -44,18 +49,33 @@ class editGroup extends Component {
         // form validation
 
         // send form data to app
+        if(`${id}`=='create'){
+            axios.put(`${this.state.url}group/${id}`, {
+                group_name: this.state.data.group_name,
+            }).then((response)=>
+                {
+                    this.props.history.push('/groups')
+                    alert('Success, changes have been saved!');
+                }
+            )
+                .catch(e => {
+                    console.log(e.message);
+                });
+
+
+    }else{
         axios.put(`${this.state.url}group/${id}`, {
             group_name: this.state.data.group_name,
         }).then((response)=>
             {
-                this.props.history.goBack()
+                this.props.history.push('/groups')
                 alert('Success, changes have been saved!');
             }
         )
             .catch(e => {
                 console.log(e.message);
             });
-
+            }
     };
 
 
@@ -67,7 +87,7 @@ class editGroup extends Component {
 
         return(
             <div>
-            <h1>Edit User</h1>
+            <h1>Group</h1>
         <div className="col-lg-8">
             <form onSubmit={this.onFormSubmit}>
             <div>
@@ -76,7 +96,7 @@ class editGroup extends Component {
         </div>
             </div>
             <div className="form-group col-lg-6">
-            <button  className="btn btn-primary btn-block">Update User</button>
+            <button  className="btn btn-primary btn-block">Submit</button>
         </div>
         </form>
         </div>

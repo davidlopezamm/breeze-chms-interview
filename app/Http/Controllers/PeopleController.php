@@ -3,15 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Imports\PersonImport;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Http\Resources\PeopleCollection;
 use App\Http\Resources\PersonResource;
 use App\Models\Person;
 
+
+
+
 class PeopleController extends Controller
 {
+    public function import() 
+    {
+        Excel::import(new PersonImport, request()->file('file'));
+       // Excel::import(new PersonImport, 'testP.csv');
+
+        return response()->json(null, 204);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -47,8 +59,7 @@ class PeopleController extends Controller
             'first_name'    => 'required|max:255',
             'last_name'     => 'required|max:255',
             'email_address' => 'required|email',
-            'group_id' => 'required|max:20',
-
+            'group_id' => 'max:20',
             'status'        => Rule::in(['active', 'archived'])
         ]);
 
@@ -68,8 +79,8 @@ class PeopleController extends Controller
     public function show($id)
     {
 
-        $person = DB::table('groups')
-            ->leftJoin('people', 'groups.id', '=', 'people.group_id')
+        $person = DB::table('people')
+            ->leftJoin('groups', 'groups.id', '=', 'people.group_id')
             ->select('people.*','groups.group_name')
             ->where('people.id', '=', $id)
             ->get();
@@ -129,4 +140,5 @@ class PeopleController extends Controller
 
             return new PeopleCollection($person);
 }
+
 }

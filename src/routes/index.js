@@ -12,8 +12,8 @@ export default function Routes() {
     <Switch>
       <Route path="/groups" exact component={Groups} />
       <Route path="/people" exact component={People} />
-    <Route path="/people/edit/:id" component={PeopleEdit} />
-    <Route path="/group/edit/:id" component={GroupEdit} />
+    <Route path="/people/form/:id" component={PeopleEdit} />
+    <Route path="/group/form/:id" component={GroupEdit} />
     <Route path="/group/:group/:id" component={peopleGroup} />
     </Switch>
   );

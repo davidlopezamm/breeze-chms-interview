@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Imports\GroupImport;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Http\Resources\GroupCollection;
 use App\Http\Resources\GroupResource;
@@ -12,6 +14,14 @@ use App\Models\Group;
 
 class GroupController extends Controller
 {
+ public function import() 
+    {
+        Excel::import(new GroupImport, request()->file('file'));
+       // Excel::import(new GroupImport, 'testP.csv');
+
+        return response()->json(null, 204);
+    }
+
     /**
      * Display a listing of the resource.
      *
