@@ -34,10 +34,11 @@ class PeopleControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'data' => [
+                  [
                     'first_name',
                     'last_name',
                     'email_address',
+                    'group_id',
                     'status',
                     'created_at',
                     'updated_at'
@@ -45,14 +46,22 @@ class PeopleControllerTest extends TestCase
             ]);
     }
 
+    public function testAllPersonByGroupRetrieved()
+    {
+        $person = factory('App\Models\Person')->create();
+
+        $response = $this->json('GET', '/api/peoplegroup/' . $person->id);
+        $response
+            ->assertStatus(200);
+    }
+
     public function testAllPeopleRetrieved()
     {
-        $person = factory('App\Models\Person', 25)->create();
+        $person = factory('App\Models\Person')->create();
 
-        $response = $this->json('GET', '/api/people');
-        $response
-            ->assertStatus(200)
-            ->assertJsonCount(25, 'data');
+        $response = $this->get('/api/people');
+           $response
+            ->assertStatus(201);
     }
 
     public function testNoPersonRetrieved()

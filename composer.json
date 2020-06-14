@@ -60,6 +60,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "test": "C:/xampp/htdocs/coding-exercise-api-react-v2/vendor/bin/phpunit"
+
     }
 }

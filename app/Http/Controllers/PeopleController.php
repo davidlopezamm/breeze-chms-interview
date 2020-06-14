@@ -31,10 +31,16 @@ class PeopleController extends Controller
      */
     public function index()
     {
-        return new PeopleCollection( $person = DB::table('groups')
-            ->rightJoin('people', 'groups.id', '=', 'people.group_id')
+          // return new PeopleCollection(Person::all());
+
+
+            $person = DB::table('people')
+            ->leftJoin('groups', 'groups.id', '=', 'people.group_id')
             ->select('people.*','groups.group_name')
-            ->get());
+            ->get();
+
+        
+        return (new PeopleCollection($person))->response()->setStatusCode(201);
     }
 
     /**
@@ -59,7 +65,7 @@ class PeopleController extends Controller
             'first_name'    => 'required|max:255',
             'last_name'     => 'required|max:255',
             'email_address' => 'required|email',
-            'group_id' => 'max:20',
+            'group_id'      => 'max:20',
             'status'        => Rule::in(['active', 'archived'])
         ]);
 
@@ -85,8 +91,14 @@ class PeopleController extends Controller
             ->where('people.id', '=', $id)
             ->get();
 
-            return ($person);
-           // return new PersonResource(Person::findOrFail($id));
+
+            if(count($person)==0){
+                       return new PersonResource(Person::findOrFail($id));
+            }else{
+                  return ($person);
+            }
+          
+         
       
     }
 
