@@ -50,7 +50,7 @@ class editGroup extends Component {
 
         // send form data to app
         if(`${id}`=='create'){
-            axios.put(`${this.state.url}group/${id}`, {
+            axios.post(`${this.state.url}group`, {
                 group_name: this.state.data.group_name,
             }).then((response)=>
                 {

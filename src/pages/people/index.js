@@ -6,15 +6,18 @@ import _ from 'lodash'
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 class ResultsList extends Component {
+
     constructor(props) {
         super(props);
-        this.state = {  column: null,  direction: null, data: [] };
+        this.state = {  column: null,
+            direction: null,
+            data: [],
+            url: 'http://localhost:8000/api/'};
     }
 
     componentDidMount() {
-        fetch("http://localhost:8000/api/people")
+        fetch(`${this.state.url}people`)
             .then(response => response.json())
             .then(data => this.setState({ data: data.data }));
     }
@@ -23,7 +26,7 @@ class ResultsList extends Component {
         event.preventDefault();
         var r = window.confirm("Are you sure you want to delete this record?");
         if (r == true) {
-            axios.delete('http://localhost:8000/api/people/'+id)
+            axios.delete(`${this.state.url}people/`+id)
                 .then((response)=>
                     {
                         this.componentDidMount()
@@ -45,7 +48,7 @@ class ResultsList extends Component {
         console.log(event.target.files[0])
         const data = new FormData()
         data.append('file', event.target.files[0])
-        axios.post("http://localhost:8000/api/pimport", data).then(res => { // then print response status
+        axios.post(`${this.state.url}pimport`, data).then(res => { // then print response status
             if (res.status == "204"){
 
                 alert("Data has been imported");

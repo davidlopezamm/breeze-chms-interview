@@ -9,11 +9,14 @@ import _ from 'lodash'
 class ResultsListGroups extends Component {
     constructor(props) {
         super(props);
-        this.state = { column: null,  direction: null,data: [] };
+        this.state = { column: null,
+            direction: null,
+            data: [],
+            url: 'http://localhost:8000/api/'};
     }
 
     componentDidMount() {
-        fetch("http://localhost:8000/api/group")
+        fetch(`${this.state.url}group`)
             .then(response => response.json())
             .then(data => this.setState({ data: data.data }));
     }
@@ -22,7 +25,7 @@ class ResultsListGroups extends Component {
         event.preventDefault();
         var r = window.confirm("Are you sure you want to delete this group?");
         if (r == true) {
-            axios.delete('http://localhost:8000/api/group/'+id)
+            axios.delete(`${this.state.url}group/`+id)
                 .then((response)=>
                     {
                         this.componentDidMount()
