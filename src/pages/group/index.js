@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Button, Confirm } from 'semantic-ui-react'
 import { Link } from 'react-router'
-import Form from 'react-bootstrap/Form';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import Form from 'react-bootstrap/Form';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import _ from 'lodash'
+import ReactFileReader from 'react-file-reader';
 
 class ResultsListGroups extends Component {
     constructor(props) {
@@ -12,8 +13,12 @@ class ResultsListGroups extends Component {
         this.state = { column: null,
             direction: null,
             data: [],
-            url: 'http://localhost:8000/api/'};
+            url: 'http://localhost:8000/api/',
+            open: false};
     }
+
+    open = () => this.setState({ open: true })
+    close = () => this.setState({ open: false })
 
     componentDidMount() {
         fetch(`${this.state.url}group`)
@@ -23,13 +28,14 @@ class ResultsListGroups extends Component {
 
     handleBtnDelete(id, event){
         event.preventDefault();
-        var r = window.confirm("Are you sure you want to delete this group?");
-        if (r == true) {
+      //  var r = window.confirm("Are you sure you want to delete this group?");
+        if (true) {
             axios.delete(`${this.state.url}group/`+id)
                 .then((response)=>
                     {
                         this.componentDidMount()
-                        alert('Success, group has been deleted!');
+                       // alert('Success, group has been deleted!');
+                        this.setState({ open: false })
                     }
                 )
                 .catch(e => {
@@ -43,21 +49,42 @@ class ResultsListGroups extends Component {
 
     }
 
-    onChangeHandler=event=>{
-        console.log(event.target.files[0])
-        const data = new FormData()
-        data.append('file', event.target.files[0])
-        axios.post("http://localhost:8000/api/gimport", data).then(res => { // then print response status
-            if (res.status == "204"){
+    handleFiles = files => {
+        var apiRouter = "pimport"
+        var fileType = "People"
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            // Use reader.result
+            //  alert(reader.result)
+            console.log(reader.result)
+            const fileVal = files[0]['name'].split(".")
+            if(fileVal[1] == "csv" ) {
+                if (reader.result.includes("group_name")){
+                    apiRouter = "gimport";
+                    fileType = "Groups"
+                }
+                const data = new FormData()
+                var apiURL = 'http://localhost:8000/api/' + apiRouter
+                data.append('file', files[0])
+                axios.post(apiURL, data).then(res => { // then print response status
+                    if (res.status == "204") {
 
-                alert("Data has been imported");
-                window.location.reload(false);
+                        alert("Data has been imported to " + fileType);
+                        window.location.reload(false);
+                    }
+                }).catch(function () {
+
+                    alert("There was an error processing this file");
+                    window.location.reload(false);
+                });
+            }else {
+                alert("Please upload a file with CSV extension")
             }
-        }).catch(function() {
 
-            alert("There was an error processing this file");
-            window.location.reload(false);
-        });
+
+        }
+        reader.readAsText(files[0]);
+
 
     }
 
@@ -89,12 +116,11 @@ class ResultsListGroups extends Component {
         var id = ""
         return       (
             <div style={{ margin: 20 }}>
-    <Form>
-        <Form.Group>
-        <Form.File id="exampleFormControlFile1" label="Import Records from CSV File"  onChange={this.onChangeHandler}/>
-        </Form.Group>
-        </Form>
-            <Table sortable celled fixed>
+        Import Records from CSV File
+        <ReactFileReader  handleFiles={this.handleFiles} fileTypes={'.csv'}>
+            <Button color='green' >Choose File</Button>
+        </ReactFileReader>
+            <Table sortable celled >
 
 
         <Table.Header>
@@ -119,9 +145,15 @@ class ResultsListGroups extends Component {
                     <Table.Cell singleLine>{ group.id }</Table.Cell>
                 <Table.Cell singleLine>{ group.group_name }</Table.Cell>
                 <Table.Cell singleLine>
-                <Link className="btn btn-success btn-block" href={`/group/${ group.group_name }/${ group.id }`} >View Members</Link>
-                <Link className="btn btn-primary btn-block" href={`/group/edit/${ group.id }`} >Edit</Link>
-                <Link className="btn btn-danger btn-block" onClick={(event) => this.handleBtnDelete(group.id, event)} href="#" id={group.id} >Delete</Link></Table.Cell>
+                <Link className="ui teal button"  href={`/group/${ group.group_name }/${ group.id }`} >View Members</Link>
+                <Link className="ui blue button" href={`/group/form/${ group.id }`} >Edit</Link>
+                <Link className="ui red button" onClick={this.open} href="#" id={group.id} >Delete</Link></Table.Cell>
+                <Confirm
+                open={this.state.open}
+                onCancel={this.close}
+                onConfirm={(event) => this.handleBtnDelete(group.id, event)}
+                />
+
                 </Table.Row>
             );
             })

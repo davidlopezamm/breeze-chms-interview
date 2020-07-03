@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Button, Confirm } from 'semantic-ui-react'
 import { Link } from 'react-router'
 import axios from "axios"
 import _ from 'lodash'
-import Form from 'react-bootstrap/Form';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactFileReader from 'react-file-reader';
 
 class ResultsList extends Component {
+
+    open = () => this.setState({ open: true })
+    close = () => this.setState({ open: false })
 
     constructor(props) {
         super(props);
         this.state = {  column: null,
             direction: null,
             data: [],
-            url: 'http://localhost:8000/api/'};
+            url: 'http://localhost:8000/api/',
+            open: false};
     }
 
     componentDidMount() {
@@ -24,18 +27,21 @@ class ResultsList extends Component {
 
     handleBtnDelete(id, event){
         event.preventDefault();
-        var r = window.confirm("Are you sure you want to delete this record?");
-        if (r == true) {
+
+
+        if (true) {
             axios.delete(`${this.state.url}people/`+id)
                 .then((response)=>
                     {
                         this.componentDidMount()
-                        alert('Success, record has been deleted!');
+                      //  alert('Success, record has been deleted!');
+                        this.setState({ open: false })
                     }
                 )
                 .catch(e => {
                 // console.log(e.message);
                 alert(e.response.status === 404 ? "Customer not found" : "Record deleted")
+
             });
 
         } else {
@@ -43,24 +49,45 @@ class ResultsList extends Component {
         }
 
         }
+    handleFiles = files => {
+        var apiRouter = "pimport"
+        var fileType = "People"
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            // Use reader.result
+          //  alert(reader.result)
+            console.log(reader.result)
+            const fileVal = files[0]['name'].split(".")
+            if(fileVal[1] == "csv" ) {
+                if (reader.result.includes("group_name")){
+                    apiRouter = "gimport";
+                    fileType = "Groups"
+                }
+                const data = new FormData()
+                var apiURL = 'http://localhost:8000/api/' + apiRouter
+                data.append('file', files[0])
+                axios.post(apiURL, data).then(res => { // then print response status
+                    if (res.status == "204") {
 
-    onChangeHandler=event=>{
-        console.log(event.target.files[0])
-        const data = new FormData()
-        data.append('file', event.target.files[0])
-        axios.post(`${this.state.url}pimport`, data).then(res => { // then print response status
-            if (res.status == "204"){
+                        alert("Data has been imported to " + fileType);
+                        window.location.reload(false);
+                    }
+                }).catch(function () {
 
-                alert("Data has been imported");
-                window.location.reload(false);
+                    alert("There was an error processing this file");
+                    window.location.reload(false);
+                });
+            }else {
+                alert("Please upload a file with CSV extension")
             }
-        }).catch(function() {
 
-            alert("There was an error processing this file");
-            window.location.reload(false);
-        });
+
+        }
+        reader.readAsText(files[0]);
+
 
     }
+
 
     handleSort = (clickedColumn) => () => {
         const { column,  direction } = this.state
@@ -92,13 +119,11 @@ class ResultsList extends Component {
         var id = ""
         return       (
             <div style={{ margin: 20 }}>
-
-        <Form>
-        <Form.Group>
-        <Form.File id="exampleFormControlFile1" label="Import Records from CSV File"  onChange={this.onChangeHandler}/>
-            </Form.Group>
-            </Form>
-            <Table sortable celled fixed>
+        Import Records from CSV File
+    <ReactFileReader  handleFiles={this.handleFiles} fileTypes={'.csv'}>
+            <Button color='green' >Choose File</Button>
+            </ReactFileReader>
+            <Table sortable celled>
         <Table.Header>
         <Table.Row>
         <Table.HeaderCell
@@ -133,8 +158,13 @@ class ResultsList extends Component {
                 <Table.Cell singleLine>{ person.email_address }</Table.Cell>
                 <Table.Cell singleLine>{ person.status }</Table.Cell>
                 <Table.Cell singleLine>{ person.group_name }</Table.Cell>
-                <Table.Cell singleLine><Link className="btn btn-primary btn-block" href={`/people/form/${ person.id }`} >Edit</Link>
-                            <Link className="btn btn-danger btn-block" onClick={(event) => this.handleBtnDelete(person.id, event)} href="#" id={person.id} >Delete</Link></Table.Cell>
+                <Table.Cell singleLine><Link className="ui blue button" href={`/people/form/${ person.id }`} >Edit</Link>
+                            <Link className="ui red button" onClick={this.open}  href="#" id={person.id} >Delete</Link></Table.Cell>
+                <Confirm
+                open={this.state.open}
+                onCancel={this.close}
+                onConfirm={(event) => this.handleBtnDelete(person.id, event)}
+                />
                 </Table.Row>
             );
             })

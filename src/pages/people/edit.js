@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from "axios"
 import { withRouter } from 'react-router';
-import { Table } from 'semantic-ui-react'
+import { Table, Form, Select, Button } from 'semantic-ui-react'
 
 
 class edit extends Component {
@@ -44,6 +44,15 @@ class edit extends Component {
         newData[name] = value;
         this.setState({ newData });
     };
+
+    handleDropdowChange = (event, data) => {
+        let newData = this.state.data;
+        newData[data.name] = data.value;
+        this.setState({ newData });
+        console.log(data.name);
+
+    }
+
 
 
     onFormSubmit = event => {
@@ -97,52 +106,55 @@ class edit extends Component {
     render() {
         var data = this.state.data || []
         var hits = this.state.hits || []
-        console.log(hits);
+      //  console.log(hits);
 
         return(
 
+
             <div>
+
             <h1>User</h1>
-        <div className="col-lg-8">
-            <form onSubmit={this.onFormSubmit}>
-            <div>
-            <div className="form-group col-lg-6">
-            <input className="form-control" placeholder="Full Name" name="first_name" defaultValue={data.first_name} onChange={this.handleChange}/>
-        </div>
-        <div className="form-group col-lg-6">
-            <input className="form-control" placeholder="Phone Number" name="last_name" defaultValue={data.last_name}  onChange={this.handleChange}/>
-        </div>
-        <div className="form-group col-lg-6">
-            <input className="form-control" placeholder="Email Address" name="email_address" defaultValue={data.email_address}  onChange={this.handleChange}/>
-        </div>
-        <div className="form-group col-lg-6">
-            <select  onChange={this.handleChange} name="group_id" >
+        <div>
+        <form onSubmit={this.onFormSubmit}>
+        <Form>
+        <Form.Group>
+        <Form.Input label='First name' placeholder='First name' name="first_name" defaultValue={data.first_name} onChange={this.handleChange} width={5} />
+        <Form.Input label='Last Name' placeholder="Last name" name="last_name" defaultValue={data.last_name}  onChange={this.handleChange} width={5}/>
+        </Form.Group>
+        <Form.Group>
+        <Form.Input label='Email Address' placeholder="Email Address" name="email_address" defaultValue={data.email_address}  onChange={this.handleChange} width={10} />
+        </Form.Group>
+        <Form.Group>
 
-        <option value={data.group_id}>{data.group_name}</option>
+        <Form.Field
+        control={Select}
+        options={hits.map((group, index) => ({key: group.id, text: group.group_name, value: group.id}))}
+        label={{ children: 'Group', htmlFor: 'group_id' }}
+        placeholder={data.group_name}
+        name='group_id'
+        search
+        selection
+        searchInput={{ id: 'group_id'  }}
+        onChange={this.handleDropdowChange}
+        width= {5}
+        />
+        <Form.Field
+        control={Select}
+        options={[{ text: 'Active', value: 'active'},{ text: 'Archived', value: 'Archived'}]}
+        label={{ children: 'Status', htmlFor: 'status_user' }}
+        placeholder={data.status}
+        name='status'
+        search
+        selection
+        searchInput={{ id: 'status_user'  }}
+        onChange={this.handleDropdowChange}
+        width= {5}
+        />
 
-            {
-                hits.map((group, index) => {
-                    return (
 
-                        <option value={group.id}>{group.group_name}</option>
-
-
-                );
-                })
-            }
-            </select>
-        </div>
-        <div className="form-group col-lg-6">
-            <select defaultValue={data.status} onChange={this.handleChange} name="status" >
-            <option value={data.status}>{data.status}</option>
-            <option value="archived">Archived</option>
-            <option value="active">Active</option>
-    </select>
-        </div>
-        </div>
-            <div className="form-group col-lg-6">
-            <button  className="btn btn-primary btn-block">Update User</button>
-        </div>
+        </Form.Group>
+        </Form>
+        <Button type='submit'>Submit</Button>
         </form>
         </div>
         </div>

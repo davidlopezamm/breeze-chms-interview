@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { withRouter } from 'react-router';
-import { Table } from 'semantic-ui-react'
+import { Table, Form, Select, Button } from 'semantic-ui-react'
 
 
 class editGroup extends Component {
@@ -88,18 +88,16 @@ class editGroup extends Component {
         return(
             <div>
             <h1>Group</h1>
-        <div className="col-lg-8">
             <form onSubmit={this.onFormSubmit}>
-            <div>
-            <div className="form-group col-lg-6">
-            <input className="form-control" placeholder="Name" name="group_name" defaultValue={data.group_name} onChange={this.handleChange}/>
-        </div>
-            </div>
-            <div className="form-group col-lg-6">
-            <button  className="btn btn-primary btn-block">Submit</button>
-        </div>
+            <Form>
+            <Form.Group>
+            <Form.Input label='Group name' placeholder='Name' name="group_name" defaultValue={data.group_name} onChange={this.handleChange} width={5} />
+            </Form.Group>
+            </Form>
+            <Button type='submit'>Submit</Button>
+
         </form>
-        </div>
+
         </div>
 
     );
