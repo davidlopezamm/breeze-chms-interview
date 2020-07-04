@@ -1,13 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import ResultsList from './ResultsList';
+import Adapter from 'enzyme-adapter-react-16';
+import { shallow, configure } from 'enzyme';
+import { MemoryRouter } from 'react-router';
+import People from './pages/people';
+import { Route } from 'react-router-dom';
 
+configure({ adapter: new Adapter() });
 let wrapper, data;
 
-describe('<ResultsList />', () => {
+describe('<ResultsList /> People', () => {
 
     beforeAll(() => {
-        wrapper = shallow(<ResultsList />)
+        wrapper = shallow(<People />)
         data = [{
             "id": 132,
             "first_name": "Macie",

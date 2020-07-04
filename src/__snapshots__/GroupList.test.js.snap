@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ResultsList /> Group should match the snapshot 1`] = `
+<div
+  style={
+    Object {
+      "margin": 20,
+    }
+  }
+>
+  Import Records from CSV File
+  <ReactFileReader
+    base64={false}
+    disabled={false}
+    fileTypes=".csv"
+    handleFiles={[Function]}
+    multipleFiles={false}
+  >
+    <Button
+      as="button"
+      color="green"
+    >
+      Choose File
+    </Button>
+  </ReactFileReader>
+  <Table
+    as="table"
+    celled={true}
+    sortable={true}
+  >
+    <TableHeader
+      as="thead"
+    >
+      <TableRow
+        as="tr"
+        cellAs="td"
+      >
+        <TableHeaderCell
+          as="th"
+          onClick={[Function]}
+          sorted={null}
+        >
+          ID
+        </TableHeaderCell>
+        <TableHeaderCell
+          as="th"
+          onClick={[Function]}
+          sorted={null}
+        >
+          Group Name
+        </TableHeaderCell>
+        <TableHeaderCell
+          as="th"
+          style={
+            Object {
+              "width": 200,
+            }
+          }
+        >
+          Action
+        </TableHeaderCell>
+      </TableRow>
+    </TableHeader>
+    <TableBody
+      as="tbody"
+    >
+      <TableRow
+        as="tr"
+        cellAs="td"
+        key="0"
+      >
+        <TableCell
+          as="td"
+          singleLine={true}
+        >
+          132
+        </TableCell>
+        <TableCell
+          as="td"
+          singleLine={true}
+        >
+          Elders
+        </TableCell>
+        <TableCell
+          as="td"
+          singleLine={true}
+        >
+          <Link
+            className="ui teal button"
+            href="/group/Elders/132"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+          >
+            View Members
+          </Link>
+          <Link
+            className="ui blue button"
+            href="/group/form/132"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+          >
+            Edit
+          </Link>
+          <Link
+            className="ui red button"
+            href="#"
+            id={132}
+            onClick={[Function]}
+            onlyActiveOnIndex={false}
+            style={Object {}}
+          >
+            Delete
+          </Link>
+        </TableCell>
+        <Confirm
+          cancelButton="Cancel"
+          confirmButton="OK"
+          content="Are you sure?"
+          onCancel={[Function]}
+          onConfirm={[Function]}
+          open={false}
+          size="small"
+        />
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>
+`;

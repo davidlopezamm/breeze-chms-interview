@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ResultsList /> should match the snapshot 1`] = `
+exports[`<ResultsList /> People by group should match the snapshot 1`] = `
 <Table
   as="table"
   celled={true}
-  padded={true}
+  sortable={true}
 >
   <TableHeader
     as="thead"
@@ -15,24 +15,29 @@ exports[`<ResultsList /> should match the snapshot 1`] = `
     >
       <TableHeaderCell
         as="th"
-        singleLine={true}
+        onClick={[Function]}
+        sorted={null}
       >
         First Name
       </TableHeaderCell>
       <TableHeaderCell
         as="th"
+        onClick={[Function]}
+        sorted={null}
       >
         Last Name
       </TableHeaderCell>
       <TableHeaderCell
         as="th"
+        onClick={[Function]}
+        sorted={null}
       >
         Email
       </TableHeaderCell>
       <TableHeaderCell
         as="th"
       >
-        Status
+        Action
       </TableHeaderCell>
     </TableRow>
   </TableHeader>
@@ -66,8 +71,34 @@ exports[`<ResultsList /> should match the snapshot 1`] = `
         as="td"
         singleLine={true}
       >
-        active
+        <Link
+          className="ui blue button"
+          href="/people/form/132"
+          onlyActiveOnIndex={false}
+          style={Object {}}
+        >
+          Edit
+        </Link>
+        <Link
+          className="ui red button"
+          href="#"
+          id={132}
+          onClick={[Function]}
+          onlyActiveOnIndex={false}
+          style={Object {}}
+        >
+          Delete
+        </Link>
       </TableCell>
+      <Confirm
+        cancelButton="Cancel"
+        confirmButton="OK"
+        content="Are you sure?"
+        onCancel={[Function]}
+        onConfirm={[Function]}
+        open={false}
+        size="small"
+      />
     </TableRow>
   </TableBody>
 </Table>

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ResultsList /> Group should match the snapshot 1`] = `
+<div>
+  <h1>
+    Group
+  </h1>
+  <form
+    onSubmit={[Function]}
+  >
+    <Form
+      as="form"
+    >
+      <FormGroup>
+        <FormInput
+          as={[Function]}
+          control={[Function]}
+          label="Group name"
+          name="group_name"
+          onChange={[Function]}
+          placeholder="Name"
+          width={5}
+        />
+      </FormGroup>
+    </Form>
+    <Button
+      as="button"
+      type="submit"
+    >
+      Submit
+    </Button>
+  </form>
+</div>
+`;
