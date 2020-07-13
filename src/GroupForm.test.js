@@ -14,8 +14,8 @@ describe('<ResultsList /> Group', () => {
         wrapper = shallow(<Groups
         match={{params: {id: 1}, isExact: true, path: "", url: ""}} />)
         data = [{
-            "id": 132,
-            "group_name": "Elders",
+            "id": 32,
+            "group_name": "Elder",
             "updated_at": "2019-07-20 22:05:47",
             "created_at": "2019-07-20 22:05:47"
         }]

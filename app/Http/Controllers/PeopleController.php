@@ -19,8 +19,9 @@ class PeopleController extends Controller
 {
     public function import() 
     {
-        Excel::import(new PersonImport, request()->file('file'));
-       // Excel::import(new PersonImport, 'testP.csv');
+       Excel::import(new PersonImport, request()->file('file'));
+       // (new UsersImport)->import(request()->file('file'), null, \Maatwebsite\Excel\Excel::CSV);
+        //Excel::import(new PersonImport, 'testP.csv');
 
         return response()->json(null, 204);
     }

@@ -53,13 +53,13 @@ exports[`<ResultsList /> People by group should match the snapshot 1`] = `
         as="td"
         singleLine={true}
       >
-        Macie
+        David
       </TableCell>
       <TableCell
         as="td"
         singleLine={true}
       >
-        Emmerich
+        Lopez
       </TableCell>
       <TableCell
         as="td"

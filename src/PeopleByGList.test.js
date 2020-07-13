@@ -15,8 +15,8 @@ describe('<ResultsList /> People by group', () => {
 
         data = [{
             "id": 132,
-            "first_name": "Macie",
-            "last_name": "Emmerich",
+            "first_name": "David",
+            "last_name": "Lopez",
             "email_address": "cremin.marjory@hotmail.com",
             "status": "active",
             "group_name": "Elders",
