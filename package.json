@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.4.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "csvtojson": "^2.0.10",
     "enzyme": "^3.10.0",
